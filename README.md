@@ -4,11 +4,13 @@
 https://forms.gle/TmPhW5GhYPo61mJH9
 
 ## Directions:
-1. Fork this repo
-2. Clone this repo
-3. Create a branch (your github username + project example: bellagrunt_frontend or bellagrunt_backend) for your work off of what direction you want to be interviewed in: 
+1. Fork
+2. Clone
+3. Create a branch for your work off of what direction you want to be interviewed in: 
 frontend, backend, or full stack.
-4. Develop the task and commit
+(Example: your github username + project example: bellagrunt_frontend or bellagrunt_backend)
+4. Create a folder within the directory where your work will live.
+5. Develop the task and commit
 
 ## Submission
 When you are ready to submit your app to the frontend team, commit to this folder of the folder you created and ping me in discord: trollgrunt#9260. Please spend no more than 4-6 hours on this test.
