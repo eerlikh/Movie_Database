@@ -8,8 +8,15 @@ frontend, backend, or full stack.
 4. Develop the task and commit
 
 
-## SUBMISSION
+## Submission
 When you are ready to submit your app to the frontend team, commit to this folder of the folder you created and ping me in discord: trollgrunt. Please spend no more than 4-6 hours on this test.
 
-### Time:
-- You have one week to complete this task. We will go over the results
+## Bonus Points
+1. Add more features that you think are cool! Here are some ideas:
+2. Lazy loading
+3. A search bar
+4. Filtering
+5. Show related movies on the movie details view
+6. A caching layer for your requests
+7. Unit testing
+8. Security
