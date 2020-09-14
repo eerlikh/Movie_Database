@@ -1,0 +1,32 @@
+- table:
+    schema: public
+    name: movie
+  array_relationships:
+  - name: favorited_by
+    using:
+      foreign_key_constraint_on:
+        column: movie_id
+        table:
+          schema: public
+          name: user_movie
+- table:
+    schema: public
+    name: user
+  array_relationships:
+  - name: favorite_movies
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          schema: public
+          name: user_movie
+- table:
+    schema: public
+    name: user_movie
+  object_relationships:
+  - name: movie
+    using:
+      foreign_key_constraint_on: movie_id
+  - name: user
+    using:
+      foreign_key_constraint_on: user_id
