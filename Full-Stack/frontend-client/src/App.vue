@@ -43,7 +43,7 @@
     </v-app-bar>
 
     <v-main>
-      <HelloWorld />
+      <HelloWorld v-if="loggedIn" />
     </v-main>
   </v-app>
 </template>
