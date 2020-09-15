@@ -10,7 +10,7 @@ node_modules
 *.sln
 *.sw?
 .vercel
-
+*.env
 *private.key
 scratch-*.js
 **/dist
