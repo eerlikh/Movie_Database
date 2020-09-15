@@ -25,36 +25,50 @@
         />
       </div>
 
+      <span
+        v-show="loggedIn"
+        class="text-caption white--text text--darken-1"
+      >signed in as <br> <span class="text-subtitle-2 font-italic">{{ userName }}</span></span>
+
       <v-spacer></v-spacer>
 
       <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
+        v-show="!loggedIn"
+        @click="signup"
+        color="green darken-2"
       >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
+        sign up
       </v-btn>
+
     </v-app-bar>
 
     <v-main>
-      <HelloWorld/>
+      <HelloWorld />
     </v-main>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+import HelloWorld from "./components/HelloWorld";
+import { mapState, mapActions } from "vuex";
 
 export default {
-  name: 'App',
+  name: "App",
 
   components: {
-    HelloWorld,
+    HelloWorld
   },
 
   data: () => ({
     //
   }),
+
+  computed: {
+    ...mapState(["loggedIn", "userName"])
+  },
+
+  methods: {
+    ...mapActions(["signup"])
+  }
 };
 </script>

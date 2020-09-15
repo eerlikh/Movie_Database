@@ -7,10 +7,10 @@ import { restartWebsockets } from 'vue-cli-plugin-apollo/graphql-client';
 import createTempUser from '@/gql/createTempUser.gql';
 
 // MIKE: i don't like using snake case for these local storage keys
-const previouslyLoggedInKey = 'guessing_game_previously_logged_in'
-const tokenKey = 'guessing_game_token'
-const userNameKey = 'guessing_game_user_name'
-const userIdKey = 'guessing_game_user_id'
+const previouslyLoggedInKey = 'movie_fullstack_previously_logged_in'
+const tokenKey = 'movie_fullstack_token'
+const userNameKey = 'movie_fullstack_user_name'
+const userIdKey = 'movie_fullstack_user_id'
 
 // some util functions
 const set = property => (state, payload) => (state[property] = payload);
