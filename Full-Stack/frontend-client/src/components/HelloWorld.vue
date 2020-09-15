@@ -1,8 +1,15 @@
 <template>
   <v-container>
-    <v-row class="text-center">
+    <v-row>
       <v-col class="mb-4">
-        asldfkjasldfkjaskldfj
+        <ul>
+          <li
+            v-for="movie in favoriteMovies"
+            :key="movie.id"
+          >
+            {{ movie.title }}
+          </li>
+        </ul>
       </v-col>
     </v-row>
   </v-container>
@@ -17,7 +24,7 @@ export default {
 
   data() {
     return {
-      favoriteMovies: null
+      favoriteMovies: []
     };
   },
 
@@ -34,7 +41,8 @@ export default {
             id: this.userId
           };
         },
-        update: data => data.user_by_pk.favorite_movies.map(x => x.movie.details)
+        update: data =>
+          data.user_by_pk.favorite_movies.map(x => x.movie.details)
       };
     }
   }
