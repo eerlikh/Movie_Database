@@ -14,7 +14,7 @@ const defaultOptions = {
   persisting: false,
   websocketsOnly: false,
   ssr: false,
-  getAuth: () => store.state.loggedIn ? `Bearer ${store.state.token}` : '',
+  getAuth: () => (store.state.loggedIn ? `Bearer ${store.state.token}` : ''),
   notifyOnNetworkStatusChange: true,
 };
 

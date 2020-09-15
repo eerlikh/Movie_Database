@@ -2,8 +2,19 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import gql from 'graphql-tag';
 // import router from '@/router';
+import { apolloClient } from '@/main';
 import { restartWebsockets } from 'vue-cli-plugin-apollo/graphql-client';
-import createTempUser from '@/gql/createTempUser.gql'
+import createTempUser from '@/gql/createTempUser.gql';
+
+// MIKE: i don't like using snake case for these local storage keys
+const previouslyLoggedInKey = 'guessing_game_previously_logged_in'
+const tokenKey = 'guessing_game_token'
+const userNameKey = 'guessing_game_user_name'
+const userIdKey = 'guessing_game_user_id'
+
+// some util functions
+const set = property => (state, payload) => (state[property] = payload);
+const toggle = property => state => (state[property] = !state[property]);
 
 Vue.use(Vuex);
 
@@ -12,27 +23,27 @@ export default new Vuex.Store({
     loggedIn: false,
     token: null,
     userName: null,
-    userId: null
+    userId: null,
   },
 
   mutations: {
     setLoggedIn: set('loggedIn'),
     setToken: set('token'),
     setUserId: set('userId'),
-    setUserName: set('userName')
+    setUserName: set('userName'),
   },
 
   actions: {
     refreshLogin({ dispatch }) {
       if (
-        (typeof localStorage != undefined)
+        (typeof localStorage !== undefined)
         && (localStorage.getItem(previouslyLoggedInKey) == 'true')
       ) {
-        const token = localStorage.getItem(tokenKey)
-        const userId = parseInt(localStorage.getItem(userIdKey))
-        const userName = localStorage.getItem(userNameKey)
+        const token = localStorage.getItem(tokenKey);
+        const userId = parseInt(localStorage.getItem(userIdKey));
+        const userName = localStorage.getItem(userNameKey);
 
-        dispatch('login', { token, userId, userName })
+        dispatch('login', { token, userId, userName });
       }
     },
 
@@ -45,33 +56,33 @@ export default new Vuex.Store({
         // variables: {
         //   name: 'cooluser70'
         // },
-      })
+      });
 
-      if (typeof localStorage != 'undefined') {
-        localStorage.setItem(previouslyLoggedInKey, 'true')
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(previouslyLoggedInKey, 'true');
 
         // store user data in local storage (i know this is a security no-no,
         // but i dont think it's too bad in this case)
-        localStorage.setItem(tokenKey, token)
-        localStorage.setItem(userIdKey, id)
-        localStorage.setItem(userNameKey, name)
+        localStorage.setItem(tokenKey, token);
+        localStorage.setItem(userIdKey, id);
+        localStorage.setItem(userNameKey, name);
       }
 
       // NOTE: source code for restartWebsockets: https://tinyurl.com/y6xnn38h
-      if (apolloClient.wsClient) restartWebsockets(apolloClient.wsClient)
+      if (apolloClient.wsClient) restartWebsockets(apolloClient.wsClient);
 
       // store it in memory too
-      dispatch('login', { token, userName: name, userId: id })
+      dispatch('login', { token, userName: name, userId: id });
 
       // refresh page (explanation: https://tinyurl.com/yxamfmfs)
       // router.go()
     },
 
     login({ commit }, { token, userId, userName }) {
-      commit('setToken', token)
-      commit('setLoggedIn', true)
-      commit('setUserId', userId)
-      commit('setUserName', userName)
+      commit('setToken', token);
+      commit('setLoggedIn', true);
+      commit('setUserId', userId);
+      commit('setUserName', userName);
     },
   },
   modules: {

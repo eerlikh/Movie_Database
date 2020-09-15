@@ -3,6 +3,7 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import { createProvider, createClient } from './vue-apollo';
+import vuetify from './plugins/vuetify';
 
 Vue.config.productionTip = false;
 
@@ -15,7 +16,9 @@ new Vue({
   store,
   apolloProvider: createProvider(apolloClient),
   render: (h) => h(App),
+  vuetify,
+
   created() {
     store.dispatch('refreshLogin');
-  }
+  },
 }).$mount('#app');
