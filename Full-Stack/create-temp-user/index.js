@@ -32,10 +32,6 @@ const execute = async (variables) => {
     }
   );
 
-  console.log('asdfasdfasdf 6')
-
-  console.log(fetchResponse)
-
   const data = await fetchResponse.json();
   return data;
 };
@@ -59,29 +55,17 @@ const handler = async (req, res) => {
   // generate a random name if name is not provided
   if (!name || name == '') {
     // generate new random names until a unqiue one is found
-    console.log('asdfasdfasdf')
     while (true) {
       name = generateName()
-    console.log('asdfasdfasdf 1')
-
       const executeRet = await execute({ name });
-    console.log('asdfasdfasdf 2')
-
       const errors = executeRet.errors
-      console.log('asdfasdfasdf 3')
 
       if (!errors) {
-    console.log('asdfasdfasdf 4')
-
         data = executeRet.data
         break
       } else if (errors[0].message == UNIQUE_NAME_VIOLATION_MESSAGE) {
-    console.log('asdfasdfasdf 5')
-
         continue
       } else {
-    console.log('asdfasdfasdf 6')
-
         
         throw createError(500, jsonFormat(errors[0]))
       }
@@ -96,8 +80,6 @@ const handler = async (req, res) => {
       data = executeRet.data
     }
   }
-
-  console.log('asdf')
 
   // create token and add hasura claims
   const hasuraNamespace = "https://hasura.io/jwt/claims";
@@ -131,9 +113,6 @@ const handler = async (req, res) => {
     ...data.insert_user_one,
     token
   }
-
-  console.log("res$:")
-  console.log(res$)
 
   send(
     res,
