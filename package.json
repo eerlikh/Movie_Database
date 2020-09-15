@@ -10,6 +10,7 @@
     "dev:start:hasura": "cd Full-Stack/hasura && docker-compose up -d",
     "dev:start:movie-api": "cd Full-Stack/movie-api && yarn run dev:start",
     "dev:start:create-temp-user": "cd Full-Stack/create-temp-user && yarn run dev:start",
+    "dev:start:frontend-client": "cd Full-Stack/frontend-client && yarn run serve",
     "open:hasura-console": "cd Full-Stack/hasura && hasura console",
     "hasura:check-migrations": "cd Full-Stack/hasura && hasura migrate status",
     "hasura:export-metadata": "cd Full-Stack/hasura && hasura metadata export",
