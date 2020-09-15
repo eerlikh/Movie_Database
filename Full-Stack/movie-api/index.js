@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { ApolloServer } = require('apollo-server');
+const { ApolloServer, ForbiddenError } = require('apollo-server');
 const fs = require('fs');
 const path = require('path');
 const resolvers = require('./resolvers');
@@ -15,7 +15,15 @@ const server = new ApolloServer({
   resolvers,
   playground: true,
   debug: true,
-  dataSources: () => ({ theMovieDBAPI: new TheMovieDBAPI })
+  dataSources: () => ({ theMovieDBAPI: new TheMovieDBAPI }),
+  context: async ({ req }) => {
+    console.log('headers:')
+    if (req.headers['x-hasura-role'] === 'anonymous') {
+      throw new ForbiddenError('anonymous users are not allowed to look up movie data')
+    }
+
+    return {}
+  }
 })
 
 server.listen({
