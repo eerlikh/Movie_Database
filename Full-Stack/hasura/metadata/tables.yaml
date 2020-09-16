@@ -19,6 +19,12 @@
       - id
       remote_schema: movie-api
     name: details
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - id
+      filter: {}
 - table:
     schema: public
     name: user
@@ -30,6 +36,16 @@
         table:
           schema: public
           name: user_movie
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - created_at
+      - id
+      - name
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
 - table:
     schema: public
     name: user_movie
@@ -40,3 +56,13 @@
   - name: user
     using:
       foreign_key_constraint_on: user_id
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - created_at
+      - movie_id
+      - user_id
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
