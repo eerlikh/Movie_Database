@@ -196,21 +196,12 @@ export default {
               },
             }
           ) => {
-            // const { user_by_pk: { favorite_movies: favoriteMovies } } = store.readQuery({
             const data = store.readQuery({
               query: userByPk,
               variables: {
                 id: this.userId,
               },
             });
-
-            console.log("removedId:");
-            console.log(removedId);
-
-            // data.user_by_pk.favorite_movies.push({
-            //   movie: insert_movie_one,
-            //   __typename: "user_movie",
-            // });
 
             removeIndex(
               data.user_by_pk.favorite_movies,
