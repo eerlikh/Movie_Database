@@ -15,7 +15,7 @@
     "hasura:check-migrations": "cd Full-Stack/hasura && hasura migrate status",
     "hasura:export-metadata": "cd Full-Stack/hasura && hasura metadata export",
     "hasura:apply-migrations": "cd Full-Stack/hasura && hasura migrate apply",
-    "hasura:apply-metadata": "cd Full-Stack/hasura && nhasura metadata apply",
+    "hasura:apply-metadata": "cd Full-Stack/hasura && hasura metadata apply",
     "dev:prelaunch:kill-process": "fkill -f :9230"
     
   },
