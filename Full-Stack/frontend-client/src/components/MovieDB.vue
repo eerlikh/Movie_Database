@@ -22,21 +22,28 @@
     <!-- <v-card v-for="movie in favoriteMovies" :key="movie.id" class="mb-4">
       {{ movie.title }}
     </v-card> -->
-    <v-dialog v-model="dialog">
-      <v-card v-if="isMovieSelected">
-        <div class="d-flex flex-no-wrap justify-space-between">
-          <v-img
+    <v-dialog v-model="dialog" max-width=900>
+      <v-card v-if="isMovieSelected" tile class="d-flex flex-no-wrap justify-space-between">
+          <v-img 
+            max-height=700
+            max-width=450
             contain
             :src="`https://image.tmdb.org/t/p/w600_and_h900_bestv2${selectedMovieDetails.poster_path}`"
           >
           </v-img>
           <v-card>
             <v-card-title>
-              {{ selectedMovieDetails.title }}
+              Title: {{ selectedMovieDetails.title }}
             </v-card-title>
+            <v-card-subtitle>
+              Rating: {{ selectedMovieDetails.vote_average }}/10
+            </v-card-subtitle>
             <v-card-text>
-              {{ selectedMovieDetails.overview }}
+              Overview: {{ selectedMovieDetails.overview }}
             </v-card-text>
+            <v-card-subtitle>
+              Release Date: {{ selectedMovieDetails.release_date }}
+            </v-card-subtitle>
             <v-card-actions>
               <v-btn
                 color="orange"
@@ -45,7 +52,6 @@
               <!-- @click="addMovieToFavorites(selectedMovieId)" -->
             </v-card-actions>
           </v-card>
-        </div>
       </v-card>
 
       <!-- <v-card>
