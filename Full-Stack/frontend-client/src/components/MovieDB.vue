@@ -2,7 +2,11 @@
   <v-container fluid>
     <!-- <p>{{ selectedMovieId }}</p> -->
     <v-row>
-      <v-col v-for="movie in popularMovies" :key="movie.id" :cols="cols">
+      <v-col
+        v-for="movie in popularMovies"
+        :key="movie.id"
+        :cols="cols"
+      >
         <v-card @click="handleClickMovie(movie.id)">
           <v-img
             :src="`https://image.tmdb.org/t/p/w600_and_h900_bestv2${movie.poster_path}`"
@@ -21,7 +25,7 @@
     <v-dialog v-model="dialog">
       <v-card v-if="isMovieSelected">
         <div class="d-flex flex-no-wrap justify-space-between">
-          <v-img 
+          <v-img
             contain
             :src="`https://image.tmdb.org/t/p/w600_and_h900_bestv2${selectedMovieDetails.poster_path}`"
           >
@@ -33,6 +37,13 @@
             <v-card-text>
               {{ selectedMovieDetails.overview }}
             </v-card-text>
+            <v-card-actions>
+              <v-btn
+                color="orange"
+                @click="handleFavoriteButtonClick(selectedMovieId)"
+              > favorite </v-btn>
+              <!-- @click="addMovieToFavorites(selectedMovieId)" -->
+            </v-card-actions>
           </v-card>
         </div>
       </v-card>
@@ -60,6 +71,12 @@
 import { mapState } from "vuex";
 import userByPk from "@/gql/userByPk.gql";
 import getPopularMovies from "@/gql/getPopularMovies.gql";
+import insertMovieOne from "@/gql/insertMovieOne.gql";
+import deleteUserMovieByPk from "@/gql/deleteUserMovieByPk.gql";
+
+const removeIndex = (arr, index) => {
+  return arr.splice(index, 1);
+};
 
 export default {
   name: "MovieDB",
@@ -69,15 +86,19 @@ export default {
       favoriteMovies: [],
       popularMovies: [],
       selectedMovieId: null,
-      dialog: false
+      dialog: false,
     };
   },
 
   computed: {
     ...mapState(["userId"]),
 
+    isSelectedMovieFavorited() {
+      return this.favoriteMovies.some((x) => x.id === this.selectedMovieId);
+    },
+
     selectedMovieDetails() {
-      return this.popularMovies.find(x => x.id === this.selectedMovieId);
+      return this.popularMovies.find((x) => x.id === this.selectedMovieId);
     },
 
     isMovieSelected() {
@@ -98,7 +119,7 @@ export default {
         default:
           return 2;
       }
-    }
+    },
   },
 
   methods: {
@@ -112,27 +133,126 @@ export default {
         this.selectedMovieId = movieId;
         this.dialog = true;
       }
-    }
+    },
+
+    removeMovieFromFavorites(movieId) {
+      return null;
+    },
+
+    handleFavoriteButtonClick(movieId) {
+      if (!this.isSelectedMovieFavorited) {
+        this.$apollo.mutate({
+          mutation: insertMovieOne,
+
+          variables: {
+            userId: this.userId,
+            movieId: movieId,
+          },
+
+          update: (store, { data: { insert_movie_one } }) => {
+            const data = store.readQuery({
+              query: userByPk,
+              variables: {
+                id: this.userId,
+              },
+            });
+
+            data.user_by_pk.favorite_movies.push({
+              movie: insert_movie_one,
+              __typename: "user_movie",
+            });
+
+            store.writeQuery({
+              query: userByPk,
+              data,
+              variables: {
+                id: this.userId,
+              },
+            });
+          },
+        });
+      } else {
+        this.$apollo.mutate({
+          mutation: deleteUserMovieByPk,
+
+          variables: {
+            userId: this.userId,
+            movieId: movieId,
+          },
+
+          update: (
+            store,
+            {
+              data: {
+                delete_user_movie_by_pk: {
+                  movie: { id: removedId },
+                },
+              },
+            }
+          ) => {
+            // const { user_by_pk: { favorite_movies: favoriteMovies } } = store.readQuery({
+            const data = store.readQuery({
+              query: userByPk,
+              variables: {
+                id: this.userId,
+              },
+            });
+
+            console.log("removedId:");
+            console.log(removedId);
+
+            // data.user_by_pk.favorite_movies.push({
+            //   movie: insert_movie_one,
+            //   __typename: "user_movie",
+            // });
+
+            removeIndex(
+              data.user_by_pk.favorite_movies,
+              data.user_by_pk.favorite_movies.findIndex(
+                (x) => x.id === removedId
+              )
+            );
+
+            store.writeQuery({
+              query: userByPk,
+              data,
+              variables: {
+                id: this.userId,
+              },
+            });
+          },
+        });
+      }
+    },
   },
 
   apollo: {
     popularMovies() {
       return {
         query: getPopularMovies,
-        update: data => data.getPopularMovies
+        update: (data) => data.getPopularMovies,
       };
     },
+
     favoriteMovies() {
       return {
         query: userByPk,
+
         variables() {
           return {
-            id: this.userId
+            id: this.userId,
           };
         },
-        update: data => data.user_by_pk.favorite_movies.map(x => x.movie.details)
+
+        update: (data) =>
+          data.user_by_pk.favorite_movies.map((x) => {
+            return {
+              ...x.movie.details,
+              id: x.movie.id,
+            };
+          }),
       };
-    }
-  }
+    },
+  },
 };
 </script>
