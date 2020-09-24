@@ -7,4 +7,4 @@
 4. Run "yarn install" from the root of the project.
 
 ## How to Run:
-1. Run "yarn run dev" from the root of the project"
+1. Run "yarn run dev" from the root of the project
