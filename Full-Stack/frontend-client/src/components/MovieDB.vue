@@ -14,17 +14,18 @@
                 {{ movie.title }}
               </span>
               <v-spacer />
-              <v-icon icon color="amber lighten-1" medium>mdi-star-outline</v-icon>
+                <v-icon v-if="isMovieFavorited(movie.id)" icon color="amber lighten-1" medium>mdi-star</v-icon>
+                <v-icon v-else icon color="amber lighten-1" medium>mdi-star-outline</v-icon>
             </v-card-title>
           </v-img>
         </v-card>
       </v-col>
     </v-row>
-    <v-dialog v-model="dialog" :max-width="isMobile ? '45%' : '80%'">
+    <v-dialog v-model="dialog" :max-width="isMobile ? '70%' : '400px'">
       <v-card v-if="isMovieSelected" tile :class="{'d-flex flex-no-wrap justify-space-between': isMobile, 'justify-center': isMobile }">
         <v-img
           max-height="55%"
-          max-width="55%"
+          max-width="500px"
           contain
           :src="
             `https://image.tmdb.org/t/p/w600_and_h900_bestv2${selectedMovieDetails.poster_path}`
@@ -38,12 +39,14 @@
           <v-card-subtitle> Release Date: {{ selectedMovieDetails.release_date }} </v-card-subtitle>
           <v-card-text>
             <v-btn
-              color="red"
+              color="secondary"
               dark
               :outlined="!isSelectedMovieFavorited"
               @click="handleFavoriteButtonClick(selectedMovieId)"
             >
               {{ isSelectedMovieFavorited ? "unfavorite" : "favorite" }}
+               <v-icon v-if="isSelectedMovieFavorited" right icon color="white" class="starPosition" medium>mdi-star</v-icon>
+              <v-icon v-else right icon color="secondary" class="starPosition" medium>mdi-star-outline</v-icon> 
             </v-btn>
           </v-card-text>
         </v-card>
@@ -55,6 +58,9 @@
 <style scoped>
 .title-card-width {
   width: 80%;
+}
+.starPosition {
+  margin-bottom: 2px;
 }
 </style>
 
@@ -121,6 +127,10 @@ export default {
   },
 
   methods: {
+    isMovieFavorited(movieId) {
+      return this.favoriteMovies.some(x => x.id === movieId);
+    },
+
     handleClickMovie(movieId) {
       this.selectedMovieId = movieId;
       this.dialog = true;

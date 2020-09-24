@@ -17,7 +17,6 @@
     "hasura:apply-migrations": "cd Full-Stack/hasura && hasura migrate apply",
     "hasura:apply-metadata": "cd Full-Stack/hasura && hasura metadata apply",
     "dev:prelaunch:kill-process": "fkill -f :9230"
-    
   },
   "devDependencies": {
     "concurrently": "^5.3.0",
